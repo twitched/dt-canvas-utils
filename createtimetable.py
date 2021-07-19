@@ -50,7 +50,6 @@ def create_timetable(secrets, timetable: dict, course: int):
             'location_name': row['location'],
             'title': f"ITM 455 - {row['title']}",
         })
-    print(json.dumps({'events': events}, indent=2)) 
     requester = Requester(secrets['CANVAS_API_URL'].strip(), secrets['CANVAS_API_KEY'].strip())
     resp = requester.request('POST', f'courses/{course}/calendar_events/timetable_events', _kwargs=combine_kwargs(**{'events': events}))
     print(resp) 
