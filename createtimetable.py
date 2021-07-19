@@ -49,7 +49,6 @@ def create_timetable(secrets, timetable: dict, course: int):
             'end_at': combine_date_time_zone(row['date'], row['end_time'], timezone).isoformat(),
             'location_name': row['location'],
             'title': f"ITM 455 - {row['title']}",
-            'description': '<h1>TEst</h1>'
         })
     print(json.dumps({'events': events}, indent=2)) 
     requester = Requester(secrets['CANVAS_API_URL'].strip(), secrets['CANVAS_API_KEY'].strip())
