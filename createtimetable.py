@@ -1,37 +1,25 @@
-import os, sys, json, csv, datetime, pytz
+import csv, datetime, pytz
 from typing import IO
 # Import the Canvas class
-from canvasapi import Canvas, util
+from canvasapi import Canvas
 from canvasapi.requester import Requester
 from canvasapi.util import combine_kwargs
+import localcanvasapi
 
-# We will get these via argparse later
-course = 3614 #itm455 for now
-timetable_file = "schedule_test.csv"
-timezone = pytz.timezone('America/Boise')
-secrets_file = 'secrets'
-
-import logging
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG) #debug for now
+localcanvasapi.debug()
 
 def main():
-    secrets = read_secrets(secrets_file)
-    canvas = startcanvasapi()
-    create_timetable(secrets, read_timetable_from_csv(timetable_file), course)
-
-# Read the URL and KEY from a file and create and return a Canvas API object
-def startcanvasapi() -> Canvas:
-    # Canvas API URL
-    secrets = read_secrets(secrets_file)
-    return Canvas(secrets['CANVAS_API_URL'], secrets['CANVAS_API_KEY'])
-
-def read_secrets(secrets_file: str) -> dict:
-    secrets_dict = {}
-    secrets_file = open(secrets_file, 'r')
-    for line in secrets_file:
-        key, value = line.split('=')
-        secrets_dict[key.strip()] = value.strip() 
-    return secrets_dict   
+    args = getargs()
+    args.parse_args()
+    secrets = localcanvasapi.read_secrets(args.secrets)
+    create_timetable(secrets, read_timetable_from_csv(args.timetable), args.course, args.timezone)
+    
+def getargs():
+    p = localcanvasapi.get_argparser()
+    p.add_argument('-c', '--course', required=True, help='The course number to add the timetable to')
+    p.add_argument('-t', '--timetable', required=True, help='The file containing the timetable.  See Documentation')
+    p.add_argument('-z', '--timezone', default = 'America/Boise', help='The timezone of the events')
+    return p
         
 def combine_date_time_zone(date: str, time: str, zone: pytz) -> datetime.datetime:
     return zone.localize(datetime.datetime.strptime(f"{date} {time}", "%m/%d/%y %I:%M %p"))
@@ -40,7 +28,7 @@ def combine_date_time_zone(date: str, time: str, zone: pytz) -> datetime.datetim
 def read_timetable_from_csv(file: IO) -> dict:
     return csv.DictReader(file)        
 
-def create_timetable(secrets, timetable: dict, course: int):
+def create_timetable(secrets, timetable_file: str, course: int, timezone: str):
     tt = read_timetable_from_csv(open(timetable_file, 'r', encoding='utf-8-sig'))
     events = []
     for row in tt:
@@ -53,6 +41,6 @@ def create_timetable(secrets, timetable: dict, course: int):
     requester = Requester(secrets['CANVAS_API_URL'].strip(), secrets['CANVAS_API_KEY'].strip())
     resp = requester.request('POST', f'courses/{course}/calendar_events/timetable_events', _kwargs=combine_kwargs(**{'events': events}))
     print(resp) 
-  
+
 if __name__ == '__main__':
    main()
