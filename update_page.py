@@ -25,7 +25,8 @@ def update_page(canvas: Canvas, course_id: str, page_url: str, page_title: str, 
     new_page = {'body': contents}
     if(page_url):
         p = course.get_page(page_url)
-        p.edit(new_page)
+        print(p)
+        p.edit(**{'wiki_page[body]': new_page['body']})
     else:
         new_page['title'] = page_title
         course.create_page(new_page)
