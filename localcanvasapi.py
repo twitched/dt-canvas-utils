@@ -1,10 +1,15 @@
-import argparse
+import argparse, keyring
 from canvasapi import Canvas
 
 # Read the URL and KEY from a file and create and return a Canvas API object
 def startcanvasapi(args: argparse.Namespace) -> Canvas:
     # Canvas API URL
-    secrets = read_secrets(args.secrets)
+    secrets = {}
+    if(args.secrets):
+        secrets = read_secrets(args.secrets)
+    else:
+        secrets['CANVAS_API_URL'] = keyring.get_password("canvas", "url")
+        secrets['CANVAS_API_KEY'] = keyring.get_password("canvas", "token")   
     return Canvas(secrets['CANVAS_API_URL'], secrets['CANVAS_API_KEY'])
 
 def read_secrets(secrets_file: str) -> dict:
@@ -17,8 +22,8 @@ def read_secrets(secrets_file: str) -> dict:
     
 def get_argparser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--secrets', required=True,
-                    help='the file containing the API URL and key')
+    parser.add_argument('-s', '--secrets',
+                    help='the file containing the API URL and key.  If not present, will look for it using keyring at "canvas", "token" and "url"')
     return parser
 
 # Set logging to debug
