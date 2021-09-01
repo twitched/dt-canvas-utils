@@ -10,7 +10,7 @@ def main():
     
 def getargparser():
     p = localcanvasapi.get_argparser()
-    p.description = "Create or update a page.  --page_title is required when creating, and page_url is required when updating"
+    p.description = "List all of the assignments in this course"
     p.add_argument('-c', '--course', required=True, help='The course id whose events will be listed or deleted')
     return p
 
