@@ -1,5 +1,5 @@
 from canvasapi import Canvas
-import localcanvasapi
+import localcanvasapi, csv, time
 
 def main():
     args = getargparser().parse_args()
@@ -10,6 +10,8 @@ def main():
         new_column(canvas, args.course, args.new, args.file)
     elif(args.delete):
         delete_column(canvas, args.course, args.delete)
+    elif(args.update):
+        update_column(canvas, args.course, args.update, args.file)
     
 def getargparser():
     p = localcanvasapi.get_argparser()
@@ -30,20 +32,41 @@ def list_columns(canvas: Canvas, course_id: str):
         
 def new_column(canvas: Canvas, course_id: str, title: str, file: str):
     course = canvas.get_course(course_id)
-    return course.create_custom_column(column={'title':title})
+    course.create_custom_column(column={'title':title})
+    if(file):
+        update_column(canvas, course.id, title, file)
 
-def find_column_by_name(canvas: Canvas, course_id: str, title: str):
-    course = canvas.get_course(course_id)
+def find_column_by_name(canvas: Canvas, course, title: str):
     for a in course.get_custom_columns():
         if(a.title == title):
             return a
-        else:
-            return None
+    return None
         
 def delete_column(canvas: Canvas, course_id: str, title: str):
-    column = find_column_by_name(canvas, course_id, title)
+    course = canvas.get_course(course_id)
+    column = find_column_by_name(canvas, course, title)
     if(column):
         column.delete()
+    else:
+        print(f'could not find {column}')
+
+def update_column(canvas: Canvas, course_id: str, title: str, file: str):
+    course = canvas.get_course(course_id)
+    column = find_column_by_name(canvas, course, title)
+    if(column):
+        with open(file) as csvfile:
+            reader = csv.DictReader(csvfile)
+            bulk_column_data = []
+            for row in reader:
+                row_data = {'column_id': column.id, 'user_id': row['id'], 'content': row['content']}
+                bulk_column_data.append(row_data)
+        progress = course.column_data_bulk_update(bulk_column_data)
+        while(progress.workflow_state != "completed"):
+            print(f"waiting for bulk update...{progress.workflow_state}")
+            time.sleep(.5)
+            progress = progress.query()
+        print("done")
+        
     else:
         print(f'could not find {column}')
     
