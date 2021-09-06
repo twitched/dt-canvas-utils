@@ -32,7 +32,7 @@ def list_columns(canvas: Canvas, course_id: str):
         
 def new_column(canvas: Canvas, course_id: str, title: str, file: str):
     course = canvas.get_course(course_id)
-    course.create_custom_column(column={'title':title})
+    course.create_custom_column(column={'title':title, 'read_only': 'true'})
     if(file):
         update_column(canvas, course.id, title, file)
 
