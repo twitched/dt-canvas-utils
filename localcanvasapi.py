@@ -5,7 +5,7 @@ from canvasapi import Canvas
 def startcanvasapi(args: argparse.Namespace) -> Canvas:
     # Canvas API URL
     secrets = {}
-    if(args.secrets):
+    if(args and args.secrets):
         secrets = read_secrets(args.secrets)
     else:
         secrets['CANVAS_API_URL'] = keyring.get_password("canvas", "url")
