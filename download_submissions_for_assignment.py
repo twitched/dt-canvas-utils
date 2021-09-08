@@ -39,6 +39,8 @@ def download_submissions(canvas: Canvas, course_id: str, assignment_id: str):
                             zip_ref.extractall(path)
                         #copy exe, txt, and form1.cs
                         copy_files_in_tree_to_top(path, "**/bin/**/*.exe")
+                        copy_files_in_tree_to_top(path, "**/bin/**/*.dll")
+                        copy_files_in_tree_to_top(path, "**/bin/**/*.runtimeconfig.json")
                         copy_files_in_tree_to_top(path, "**/bin/**/*.txt")
                         copy_files_in_tree_to_top(path, "**/Form1.cs")
 
