@@ -4,7 +4,6 @@ from typing import IO
 from canvasapi import Canvas
 import localcanvasapi
 
-localcanvasapi.debug()
 
 def main():
     args = getargs().parse_args()
