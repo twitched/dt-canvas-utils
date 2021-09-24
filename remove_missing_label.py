@@ -9,7 +9,7 @@ import localcanvasapi
 def main():
     args = getargs().parse_args()
     canvas = localcanvasapi.startcanvasapi(args)
-    submit_grades(canvas, args.course, args.assignment_starts_with)
+    remove_missing_label(canvas, args.course, args.assignment_starts_with)
     
     
 def getargs():
@@ -18,7 +18,7 @@ def getargs():
     p.add_argument('-a', '--assignment_starts_with', required=True, help='assignments that start with this will be included')
     return p
         
-def submit_grades(canvas: Canvas, course_id: str, assignment_starts_with: str):
+def remove_missing_label(canvas: Canvas, course_id: str, assignment_starts_with: str):
     course = canvas.get_course(course_id)
     kwargs = {}
     kwargs['search_term'] = assignment_starts_with if assignment_starts_with else None
