@@ -1,5 +1,3 @@
-import csv
-from typing import IO
 # Import the Canvas class
 from canvasapi import Canvas
 import localcanvasapi
