@@ -26,6 +26,7 @@ def download_submissions(canvas: Canvas, course_id: str, assignment_id: str, use
     for s in assignment.get_submissions(include=['user']):
         if(s.attempt):
             username = s.user['sortable_name']
+            print(f'Downloading {assignment.name} for {username}')
             if(user == None or (user and user.lower() == s.user['login_id'].lower())):
                 path = Path(f'{assignment.name}/{username}')
                 path.mkdir(parents=True, exist_ok=True) #make a directory with the assignment name and username
