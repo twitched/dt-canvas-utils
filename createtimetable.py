@@ -10,7 +10,10 @@ localcanvasapi.debug()
 
 def main():
     args = getargs().parse_args()
-    secrets = localcanvasapi.read_secrets(args.secrets)
+    if(args.secrets):
+        secrets = localcanvasapi.read_secrets(args.secrets)
+    else:
+        secrets = localcanvasapi.get_secrets()
     create_timetable(secrets, args.timetable, args.course, pytz.timezone(args.timezone))
     
 def getargs():
