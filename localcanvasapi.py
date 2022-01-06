@@ -12,6 +12,12 @@ def startcanvasapi(args: argparse.Namespace) -> Canvas:
         secrets['CANVAS_API_KEY'] = keyring.get_password("canvas", "token")   
     return Canvas(secrets['CANVAS_API_URL'], secrets['CANVAS_API_KEY'])
 
+def get_secrets() -> dict:
+    secrets = {}
+    secrets['CANVAS_API_URL'] = keyring.get_password("canvas", "url")
+    secrets['CANVAS_API_KEY'] = keyring.get_password("canvas", "token") 
+    return secrets
+
 def read_secrets(secrets_file: str) -> dict:
     secrets_dict = {}
     secrets_file = open(secrets_file, 'r')
