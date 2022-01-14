@@ -41,11 +41,11 @@ A bunch of useful canvas utitities that I use in my classes at Boise State Unive
 
     1. Enter the canvas url (https://your.canvas.server/)
 
-        keyring set canvas url
+           keyring set canvas url
 
     2. Enter the canvas token (the token you just generated above)
    
-        keyring set canvas token
+           keyring set canvas token
     
 4.  You are now ready to use the utilities.  Test it using in the directory containin the utilities
 
