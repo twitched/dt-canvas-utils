@@ -2,7 +2,6 @@
 from canvasapi import Canvas, submission
 from canvasapi.conversation import Conversation
 from canvasapi.course import Course
-import numpy as np
 import pandas as pd
 
 import localcanvasapi
