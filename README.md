@@ -49,4 +49,4 @@ A bunch of useful canvas utitities that I use in my classes at Boise State Unive
     
 4.  You are now ready to use the utilities.  Test it using in the directory containin the utilities
 
-        python3 testapi.py
+        python3 list_my_courses.py
