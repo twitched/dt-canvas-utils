@@ -6,11 +6,11 @@ A bunch of useful canvas utitities that I use in my classes at Boise State Unive
 
 1. Install python and the latest git
 
-    `brew install python3, git, visual-studio-code`
+       brew install python3, git, visual-studio-code
 
 2. Clone the git repository
 
-    `git clone https://github.com/twitched/dt-canvas-utils.git`
+       git clone https://github.com/twitched/dt-canvas-utils.git
 
 3. Complete the common installation steps below
 
@@ -29,7 +29,7 @@ A bunch of useful canvas utitities that I use in my classes at Boise State Unive
 
 1.  Install the neede python packages from the command line (I suggest Windows Terminal instead of cmd.exe)
 
-    `pip3 install canvasapi keyring`
+        pip3 install canvasapi keyring
 
 2.  Get your Canvas API credentials
     1.  Login to Canvas
@@ -41,11 +41,11 @@ A bunch of useful canvas utitities that I use in my classes at Boise State Unive
 
     1. Enter the canvas url (https://your.canvas.server/)
 
-        `keyring set canvas url`
+        keyring set canvas url
 
     2. Enter the canvas token (the token you just generated above)
    
-        `keyring set canvas token`
+        keyring set canvas token
     
 4.  You are now ready to use the utilities.  Test it using in the directory containin the utilities
 
