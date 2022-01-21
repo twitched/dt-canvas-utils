@@ -40,15 +40,17 @@ def download_submissions(canvas: Canvas, course_id: str, assignment_id: str, use
                             with zipfile.ZipFile(filepath, 'r') as zip_ref:
                                 zip_ref.extractall(path)
                             #copy exe, txt, and form1.cs
-                            copy_files_in_tree_to_top(path, "**/bin/**/*.exe")
-                            copy_files_in_tree_to_top(path, "**/bin/**/*.dll")
-                            copy_files_in_tree_to_top(path, "**/bin/**/*.runtimeconfig.json")
-                            copy_files_in_tree_to_top(path, "**/bin/**/*.txt")
+                            copy_debug_dir_to_top(path, "**/bin/Debug")
                             copy_files_in_tree_to_top(path, "**/Form1.cs")
 
 def copy_files_in_tree_to_top(path: Path, glob: str):
     for f in list(path.glob(glob)):
         shutil.copy(f,path)
+
+def copy_debug_dir_to_top(path: Path, glob: str):
+    for f in list(path.glob(glob)):
+        print(f'copying {f} to {path}')
+        shutil.copytree(f, path, dirs_exist_ok=True)
 
 if __name__ == '__main__':
    main()
