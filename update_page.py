@@ -1,5 +1,5 @@
 # Import the Canvas class
-from canvasapi import Canvas, exceptions
+from canvasapi import Canvas
 
 import localcanvasapi
 
@@ -8,7 +8,7 @@ localcanvasapi.debug()
 def main():
     args = getargparser().parse_args()
     canvas = localcanvasapi.startcanvasapi(args)
-    update_page(canvas, args.course, args.page_url, args.page_title, args.file)
+    update_page(canvas, args.course, args.page_url, args.page_title, open(args.file, mode ='r').read())
     
 def getargparser():
     p = localcanvasapi.get_argparser()
@@ -19,8 +19,7 @@ def getargparser():
     p.add_argument('-f', '--file', required=True, help='The file containing the html of the page')
     return p
 
-def update_page(canvas: Canvas, course_id: str, page_url: str, page_title: str, file:str):
-    contents = open(file, 'r').read()
+def update_page(canvas: Canvas, course_id: str, page_url: str, page_title: str, contents: str):
     course = canvas.get_course(course_id)
     new_page = {'body': contents}
     if(page_url):
