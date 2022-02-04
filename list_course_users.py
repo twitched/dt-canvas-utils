@@ -30,7 +30,7 @@ def getargparser():
 def list_users(canvas: Canvas, course_id: str, enrollment_types: list[str]):
     course = canvas.get_course(course_id)
     for a in course.get_users(enrollment_type = enrollment_types):
-        print(a)
+        print(f'{a.name} {a.id} {a.login_id.lower()} {a.email} ')
         
 def save_users(canvas: Canvas, course_id: str, file: IO, enrollment_types: list[str]):
     course = canvas.get_course(course_id)
