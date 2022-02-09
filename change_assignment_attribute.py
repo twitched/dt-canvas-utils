@@ -24,11 +24,8 @@ def change_assignments(canvas: Canvas, course_id: str, search_term: str, name: s
     kwargs = {}
     kwargs['search_term'] = search_term if search_term else None
     for a in course.get_assignments(**kwargs):
-        print(f'changing {name} to {value} on Quiz {a.title}')
-        change_args = {}
-        change_args[name] = bool(value)
-        change_args['notify_of_update'] = False
-        a.edit(assignment = change_args)
+        print(f'changing {name} to {value} on Assignment {a.title}')
+        a.edit(assignment = {name : value, 'notify_of_update': False})
     
 if __name__ == '__main__':
    main()
