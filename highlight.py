@@ -3,8 +3,8 @@ from pygments.formatters import HtmlFormatter
 from pygments.lexers import (get_lexer_by_name, get_lexer_for_filename)
 from typing import IO
 
-def highlight_file(file: str, type = 'c#', style = 'vs'):
-    return highlight_file_io(open(file, mode = 'r'), type)
+def highlight_file(file: str, type = 'c#', style = 'vs', encoding = 'utf_8_sig'):
+    return highlight_file_io(open(file, mode = 'r', encoding=encoding), type)
 
 def highlight_file_io(file: IO, type = 'c#', style = 'vs'):
     return highlight_string(file.read(), type)
