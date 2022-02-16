@@ -7,7 +7,7 @@ from canvasapi.user import User
 
 import localcanvasapi
 
-localcanvasapi.debug()
+#localcanvasapi.debug()
 
 conversation_upload_folder = 'conversation attachments'
 
