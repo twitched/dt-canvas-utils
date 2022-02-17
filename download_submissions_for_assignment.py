@@ -23,25 +23,31 @@ def getargparser():
 def download_submissions(canvas: Canvas, course_id: str, assignment_id: str, user=None):
     course = canvas.get_course(course_id)
     assignment = course.get_assignment(assignment_id)
-    for s in assignment.get_submissions(include=['user']):
-        if(s.attempt):
-            username = s.user['sortable_name']
-            if(user == None or (user and user.lower() == s.user['login_id'].lower())):
-                print(f'Downloading {assignment.name} for {username}')
-                path = Path(f'{assignment.name}/{username}')
-                path.mkdir(parents=True, exist_ok=True) #make a directory with the assignment name and username
-                if(hasattr(s, 'attachments')):
-                    for a in s.attachments:
-                        filepath = path.joinpath(a['filename'])
-                        with urllib.request.urlopen(a['url']) as response, open(filepath, 'wb') as out_file:
-                            data = response.read() # a `bytes` object
-                            out_file.write(data)
-                        if(a['mime_class'] == 'zip'):
-                            with zipfile.ZipFile(filepath, 'r') as zip_ref:
-                                zip_ref.extractall(path)
-                            #copy exe, txt, and form1.cs
-                            copy_debug_dir_to_top(path, "**/bin/Debug")
-                            copy_files_in_tree_to_top(path, "**/Form1.cs")
+    for s in assignment.get_submissions(include=['user', 'submission_history']):
+        username = s.user['sortable_name']
+        for h in s.submission_history:
+            if(h['attempt']):
+                print(f"\n{username} {h['attempt']} {h['submitted_at']} {h['workflow_state']} {h['submission_type']}")
+                if(user == None or (user and user.lower() == s.user['login_id'].lower())):
+                    print(f"Downloading {assignment.name}-{h['attempt']} for {username}")
+                    path = Path(f'{assignment.name}/{username}-{h["attempt"]}')
+                    path.mkdir(parents=True, exist_ok=True) #make a directory with the assignment name and username
+                    if('attachments' in h):
+                        for a in h['attachments']:
+                            try:
+                                filepath = path.joinpath(a['filename'])
+                                with urllib.request.urlopen(a['url']) as response, open(filepath, 'wb') as out_file:
+                                    data = response.read() # a `bytes` object
+                                    out_file.write(data)
+                                if(a['mime_class'] == 'zip'):
+                                    with zipfile.ZipFile(filepath, 'r') as zip_ref:
+                                        zip_ref.extractall(path)
+                                    #copy exe, txt, and form1.cs
+                                    copy_debug_dir_to_top(path, "**/bin/Debug")
+                                    copy_files_in_tree_to_top(path, "**/Form1.cs")
+                            except Exception as e:
+                                print(f'unable to download attachment for {assignment.name}-{s.attempt} for {username}')
+                                print(e)
 
 def copy_files_in_tree_to_top(path: Path, glob: str):
     for f in list(path.glob(glob)):
