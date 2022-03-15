@@ -4,7 +4,7 @@ from update_page import update_page
 
 import localcanvasapi
 
-localcanvasapi.debug()
+#localcanvasapi.debug()
 
 def main():
     args = getargparser().parse_args()

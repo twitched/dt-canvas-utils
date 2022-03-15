@@ -3,7 +3,7 @@ from canvasapi import Canvas
 
 import localcanvasapi
 
-localcanvasapi.debug()
+#localcanvasapi.debug()
 
 def main():
     args = getargparser().parse_args()
