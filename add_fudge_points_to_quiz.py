@@ -28,9 +28,9 @@ def add_fudge_points(canvas: Canvas, course_id: str, search_term: str, points: f
         ans = input().strip()
         if(ans.lower() == 'y'):
             for s in q.get_submissions():
-                print(f"setting fudge ponts for {s.user_id}'s attempt {s.attempt} of {q.title}")
+                print(f"setting fudge points for {s.user_id}'s attempt {s.attempt} of {q.title} to {points}")
                 if not dry_run:
-                    s.update_score_and_comments(quiz_submissions = [{'attempt': s.attempt, 'fudge_points' : 5}])
+                    s.update_score_and_comments(quiz_submissions = [{'attempt': s.attempt, 'fudge_points' : points}])
                     print('success')
     
 if __name__ == '__main__':
