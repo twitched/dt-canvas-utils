@@ -17,7 +17,7 @@ def getargparser():
     p.description = "Create or update a page.  --page_title is required when creating, and page_url is required when updating"
     p.add_argument('-c', '--course', required=True, help='The course id whose events will be listed or deleted')
     p.add_argument('-p', '--page_title', help='The name of the page to create')    
-    p.add_argument('-f', '--file', required=True, help='The file containing the source code to highlight and upload')
+    p.add_argument('-f', '--file', nargs='+', required=True, help='The file containing the source code to highlight and upload')
     p.add_argument('-t', '--type', required=True, help='the source code type to use for highlighting (e.g., c#, py)')
     p.add_argument('-e', '--encoding', default='utf_8_sig', help='the file encoding (defaults to utf_8_sig, which works for visual studio on windows)')
     return p
